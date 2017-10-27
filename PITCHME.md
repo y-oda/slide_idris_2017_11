@@ -361,6 +361,7 @@ exactLength {m} len input = case checkEqNat m len of
 ---
 
 ### 参考文献
+#### 公式
 
 - [Type Driven Development with Idris](https://www.manning.com/books/type-driven-development-with-idris)
   - （実質的な）公式ガイドブック
@@ -369,12 +370,22 @@ exactLength {m} len input = case checkEqNat m len of
 - [Idris Tutorial](http://docs.idris-lang.org/en/latest/tutorial/index.html)
   - 公式チュートリアル
 
+---
+
+### 参考文献
+#### 日本語
+
 - [IdrisでWebアプリを書く](https://www.slideshare.net/tanakh/idrisweb)
   - 3年前の資料ですが面白いので最初に読むのにお勧め
   - この時の問題は現在もあまり解決されていない気が…
 
 - [プログラミング言語 idris - wkwkesのやつ](http://wkwkes.hatenablog.com/entry/2016/12/17/000000)
   - tactic を使った証明の様子が紹介されています
+
+---
+
+### 参考文献
+#### Haskellers 向け
 
 - [Idris for Haskellers](https://github.com/idris-lang/Idris-dev/wiki/Idris-for-Haskellers)
   - Haskeller 向け
