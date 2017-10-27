@@ -220,6 +220,10 @@ index: Vect n a -> Fin n -> a
 
 ---
 
+もうちょっと色々やってみましょう
+
+---
+
 ### ここで問題
 
 1. `zip: Vect n a -> Vect n b -> Vect n (a, b)` がある
@@ -233,7 +237,7 @@ index: Vect n a -> Fin n -> a
 - `==` の振る舞いは型として定義されているわけではない
   - 型チェッカーは「`n==m` だから `n と m は同じ` 」と判定できない
 - 型チェッカーにもわかるように書いてみる
-  - （実際は組み込みの関数で楽できます）
+  - （実際は組み込みの関数で楽できたりします）
 
 ---
 
@@ -256,6 +260,7 @@ sameS : (k: Nat) -> (j: Nat) -> (eq : EqNat k j) -> EqNat (S k) (S j)
 sameS j j (Same j) = Same(S j)
 ```
 
+- `S k` は k より 1 大きい数
 - `EqNat k j` が存在しているので k と j は同じ値として扱える
 
 ---
@@ -273,7 +278,7 @@ checkEqNat (S k) (S j) = case checkEqNat k j of
 ```
 
 - Z (ゼロのこと) と Z は同じ
-- S k (kより1大きい値) と Z は違う
+- S k と Z は違う
 - 2つの値を S k と S j と書けるなら k と j を調べる
   - k と j が同じであれば `sameS` により S k と S j も同じ
 
@@ -291,5 +296,90 @@ exactLength {m} len input = case checkEqNat m len of
 
 - `len と m が等しい` 場合は `Vect m a` を `Vect len a` として扱えている
   - Idris が型レベルで m と len が同じだと判定できている
+
+---
+
+#### まとめと感想 
+##### Idris のいいところ
+
+- すごく Type-safe
+  - コンパイルが通ったときの信頼感がすごい
+- テストしやすい
+  - そもそも変な値を受け取れないようにできる
+  - テストが必要なパターンがわかりやすい
+
+---
+
+#### まとめと感想 
+##### Idris のいいところ
+
+- 依存型によるテクニックを利用できる
+  - 値から関数の型を生成
+    - 型安全な `printf` など
+  - 型による実装の制約を使ったコードの自動生成
+  - 返り値の型をパラメータ的に使う
+
+---
+
+#### まとめと感想 
+##### Idris のつらいところ
+
+- わかりづらいエラー
+  - 型を見失う => 死
+    - 途中で型がわからなくなって途方に暮れることがよくある
+      - エラーが出始めるとちゃんとタイプチェックができない
+      - 型が違うときに型自体が難しい
+      - ホールをコツコツ作りながら実装していくのがよさそう
+  - インデントを間違う => 死
+
+---
+
+#### まとめと感想 
+##### Idris のつらいところ
+
+- 型チェッカーに怒られる => 死
+  - とにかく厳密
+    - `S a` と `a + 1` が違うと怒られる
+  - とにかく柔軟
+    - 厳密さがクリアできるとやたら柔軟
+    - 正直なぜ動いているのかわからないときがある😇
+- 依存型の実装/実装テクニックが独特
+  - 思いつかない
+
+---
+
+#### まとめと感想 
+##### Idris のつらいところ
+
+- 遅い
+  - コンパイルも実行も遅い
+    - Natがひどい
+- 普通のことが普通にできないときがある
+  - 型の証明がちゃんと動いていないような…?
+  - このへんは今後の改善に期待
+
+---
+
+### 参考文献
+
+- [Type Driven Development with Idris](https://www.manning.com/books/type-driven-development-with-idris)
+  - （実質的な）公式ガイドブック
+  - 今回の資料はこの本ベースで作っています
+
+- [Idris Tutorial](http://docs.idris-lang.org/en/latest/tutorial/index.html)
+  - 公式チュートリアル
+
+- [IdrisでWebアプリを書く](https://www.slideshare.net/tanakh/idrisweb)
+  - 3年前の資料ですが面白いので最初に読むのにお勧め
+  - この時の問題は現在もあまり解決されていない気が…
+
+- [プログラミング言語 idris - wkwkesのやつ](http://wkwkes.hatenablog.com/entry/2016/12/17/000000)
+  - tactic を使った証明の様子が紹介されています
+
+- [Idris for Haskellers](https://github.com/idris-lang/Idris-dev/wiki/Idris-for-Haskellers)
+  - Haskeller 向け
+
+- [10 things Idris improved over Haskell](https://deque.blog/2017/06/14/10-things-idris-improved-over-haskell/)
+  - Better Haskell としての Idris を知りたい人にお勧め
 
 ---
