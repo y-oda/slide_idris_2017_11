@@ -272,12 +272,10 @@ checkEqNat (S k) (S j) = case checkEqNat k j of
                               (Just eq) => Just (sameS _ _ eq)
 ```
 
-- 帰納法を使う
-  - Z (ゼロのこと) と Z は同じ
-  - S k (kより1大きい値) と Z は違う
-  - 2つの値を S k と S j と表せるのであれば、k と j が同じかどうかを調べる
-    - 両方から1引いて再帰的に調べていく
-    - k と j が同じであれば `sameS` により S k と S j も同じ
+- Z (ゼロのこと) と Z は同じ
+- S k (kより1大きい値) と Z は違う
+- 2つの値を S k と S j と書けるなら k と j を調べる
+  - k と j が同じであれば `sameS` により S k と S j も同じ
 
 ---
 
@@ -291,7 +289,7 @@ exactLength {m} len input = case checkEqNat m len of
 
 ```
 
-- `len と m が等しい` 場合は `Vect m a` を `Vect len a` に変換できている
-  - Idris が型レベルで m と len が同じだと判定できているということ
+- `len と m が等しい` 場合は `Vect m a` を `Vect len a` として扱えている
+  - Idris が型レベルで m と len が同じだと判定できている
 
 ---
