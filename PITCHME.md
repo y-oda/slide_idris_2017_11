@@ -233,7 +233,7 @@ index: Vect n a -> Fin n -> a
 - `==` の振る舞いは型として定義されているわけではない
   - 型チェッカーは「`n==m` だから `n と m は同じ` 」と判定できない
 - 型チェッカーにもわかるように書いてみる
-  - （実際は組み込みの関数でもっと楽できます）
+  - （実際は組み込みの関数で楽できます）
 
 ---
 
@@ -244,20 +244,19 @@ data EqNat : (num1 : Nat) -> (num2 : Nat) -> Type where
      Same : (num : Nat) -> EqNat num num
 ```
 
-コンストラクタから以下のことが判断可能
-
-- `EqNat a b` 型の値が存在していれば、a と b は同じ値である
+- コンストラクタから以下のことが判断可能
+  - `EqNat a b` 型の値が存在していれば、a と b は同じ値である
 
 ---
 
 #### 2つの同じ値にそれぞれ1を足しても同じ値になる
 
-```hakell
+```haskell
 sameS : (k: Nat) -> (j: Nat) -> (eq : EqNat k j) -> EqNat (S k) (S j)
 sameS j j (Same j) = Same(S j)
 ```
 
-`EqNat k j` が存在しているので k と j が同じ場合だけ実装を書けば良い
+- `EqNat k j` が存在しているので k と j は同じ値として扱える
 
 ---
 
@@ -273,6 +272,13 @@ checkEqNat (S k) (S j) = case checkEqNat k j of
                               (Just eq) => Just (sameS _ _ eq)
 ```
 
+- 帰納法を使う
+  - Z (ゼロのこと) と Z は同じ
+  - S k (kより1大きい値) と Z は違う
+  - 2つの値を S k と S j と表せるのであれば、k と j が同じかどうかを調べる
+    - 両方から1引いて再帰的に調べていく
+    - k と j が同じであれば `sameS` により S k と S j も同じ
+
 ---
 
 #### 型を変換する関数
@@ -285,13 +291,7 @@ exactLength {m} len input = case checkEqNat m len of
 
 ```
 
-- `vect_m` が `Vect m a`
-- `n` と `m` が等しい
-
-場合に
-
-`extractLength n vect_m` とすると、 `Just Vect n a` が返る
-
-(= Idris が型レベルで vect_m が `Just Vect n a` 型だと判定できるようになる)
+- `len と m が等しい` 場合は `Vect m a` を `Vect len a` に変換できている
+  - Idris が型レベルで m と len が同じだと判定できているということ
 
 ---
