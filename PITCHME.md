@@ -93,7 +93,7 @@ Nil : Vect 0 elem
 ```haskell
 my_list_map: (a->b) -> List a -> List b
 my_list_map f [] = []
-my_list_map f (x :: xs) = f x :: my_map f xs
+my_list_map f (x :: xs) = f x :: my_list_map f xs
 ```
 
 ---
