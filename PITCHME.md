@@ -318,8 +318,8 @@ checkEqNat (S k) (S j) = case checkEqNat k j of
 
 - Z と Z であれば `EqNat 0 0` が作れる(Zは0)
 - S k と Z は違う値
-- 2つの値を S k と S j と書けるなら `EqNat k j` を作ってみる
-  - `EqNat k j` が作れれば `sameS` により `EqNat S k S j` も作れる
+- S k と S j と書けるなら `EqNat k j` を作る
+  - `sameS` より`EqNat k j` なら `EqNat (S k) (S j)`
 
 ---
 
@@ -341,7 +341,7 @@ exactLength {m} len input = case checkEqNat m len of
 #### zipとあわせてみる
 
 ```haskell
--- checkEqNatなどは省略
+-- checkEqNatなどは省略
 exactLength : (len : Nat) -> (input : Vect m a) -> Maybe (Vect len a)
 exactLength {m} len input = case checkEqNat m len of
                                  Nothing => Nothing
