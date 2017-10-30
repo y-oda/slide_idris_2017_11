@@ -182,7 +182,7 @@ index: List a -> Integer -> a
 
 ---
 
-### 型の制約をきつくする
+#### 型の制約をきつくする
 
 ```haskell
 index: List a -> Nat -> a
