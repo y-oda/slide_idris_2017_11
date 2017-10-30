@@ -211,10 +211,12 @@ index: Vect n a -> Fin n -> a
 
 #### Vect の tail
 
+```haskell
 my_vect_tail: Vect (S n) a -> Vect n a
 my_vect_tail (x :: xs) = xs
+```
 
-- `Vect (S n) a` を要求する
+- `Vect (S n) a` を要求する
   - `S k` は k より 1 大きい数
   - `Vect 0 a` では型が合わない
     - 空リストではこの関数は呼べない
