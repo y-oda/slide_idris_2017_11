@@ -22,7 +22,7 @@ Yohei Oda
 
 ---
 
-### What's idris?
+#### What's idris?
 
 - Haskellベースの関数型言語
   - 文法はほぼHaskell
@@ -34,7 +34,7 @@ Yohei Oda
 
 ---
 
-### What's idris?
+#### What's idris?
 
 - 資料を書いている時点でバージョン1.1.1
   - 本(※)が出たのでバージョン1を出した
@@ -46,13 +46,13 @@ Yohei Oda
 
 ---
 
-### What's idris?
+#### What's idris?
 
 - 依存型を扱うことができる
 
 ---
 
-### 依存型
+#### 依存型
 
 - 型と値が組み合わさったとても強い型
   - 型が値に依存する
@@ -64,7 +64,7 @@ Yohei Oda
 
 ---
 
-### 依存型の例
+#### 依存型の例
 
 - 長さを型に持つリスト Vect 型
   - `Vect n a`
@@ -72,15 +72,15 @@ Yohei Oda
 
 ---
 
-### Vect の型とコンストラクタ
+#### Vect の型とコンストラクタ
 
-#### 型
+##### 型
 
 ```haskell
 Vect : Nat -> Type -> Type
 ```
 
-#### コンストラクタ
+##### コンストラクタ
 
 ```haskell
 Nil : Vect 0 elem
@@ -93,11 +93,11 @@ Nil : Vect 0 elem
 
 ---
 
-### Vect の基本的な処理を書いてみます
+Vect の基本的な処理を書いてみます
 
 ---
 
-### List の map
+#### List の map
 
 ```haskell
 my_list_map: (a->b) -> List a -> List b
@@ -107,7 +107,7 @@ my_list_map f (x :: xs) = f x :: my_list_map f xs
 
 ---
 
-### Vect の map
+#### Vect の map
 
 ```haskell
 my_vect_map: (a->b) -> Vect n a -> Vect n b
@@ -122,7 +122,7 @@ my_vect_map f (x :: xs) = f x :: my_vect_map f xs
 
 ---
 
-### List の append
+#### List の append
 
 ```haskell
 my_list_append : List a -> List a -> List a
@@ -132,7 +132,7 @@ my_list_append (x :: xs) ys = x :: my_list_append xs ys
 
 ---
 
-### Vect の append
+#### Vect の append
 
 ```haskell
 my_vect_append : Vect n a -> Vect m a -> Vect (n + m) a
@@ -151,7 +151,7 @@ my_vect_append (x :: xs) ys = x :: my_vect_append xs ys
 
 ---
 
-### 関数を作る時に面倒なこと
+#### 関数を作る時に面倒なこと
 
 - 色々なパターンの入力に対処する必要がある
   1. 普通の値
@@ -161,7 +161,7 @@ my_vect_append (x :: xs) ys = x :: my_vect_append xs ys
 
 ---
 
-### 関数を作る時に面倒なこと
+#### 関数を作る時に面倒なこと
 
 - 呼び出し側のバリデーションは信用できない
   - 結果バリデーションが二重になってたりする
@@ -171,7 +171,7 @@ my_vect_append (x :: xs) ys = x :: my_vect_append xs ys
 
 ---
 
-### リストの要素を添字で取り出す index 関数 を作る
+#### リストの要素を添字で取り出す index 関数 を作る
 
 ```haskell
 index: List a -> Integer -> a
@@ -194,7 +194,7 @@ index: List a -> Nat -> a
 
 ---
 
-### 依存型を使う
+#### 依存型を使う
 
 ```haskell
 index: Vect n a -> Fin n -> a
@@ -207,9 +207,9 @@ index: Vect n a -> Fin n -> a
 
 ---
 
-### 他の例
+#### 他の例
 
-#### Vect の tail
+##### Vect の tail
 
 ```haskell
 my_vect_tail: Vect (S n) a -> Vect n a
@@ -224,7 +224,7 @@ my_vect_tail (x :: xs) = xs
 
 ---
 
-### Vect の zip
+#### Vect の zip
 
 ```haskell
 my_vect_zip : Vect n a -> Vect n b -> Vect n (a, b)
@@ -237,7 +237,7 @@ my_vect_zip (x :: xs) (y :: ys) = (x, y) :: my_vect_zip xs ys
 
 ---
 
-### 関数に依存型を使うメリット
+#### 関数に依存型を使うメリット
 
 - 関数が期待する値を型として表現できる
   - 複数の値の組み合わせも型の制約対象にできる
@@ -247,7 +247,7 @@ my_vect_zip (x :: xs) (y :: ys) = (x, y) :: my_vect_zip xs ys
 
 ---
 
-### 関数に依存型を使うメリット
+#### 関数に依存型を使うメリット
 
 - 呼び出し側から見ると…
   - 関数が求める値をシグネチャだけで判断できる
@@ -261,7 +261,7 @@ my_vect_zip (x :: xs) (y :: ys) = (x, y) :: my_vect_zip xs ys
 
 ---
 
-### ここで問題
+#### ここで問題
 
 1. `zip: Vect n a -> Vect n b -> Vect n (a, b)` がある
 1. `Vect n String` と `Vect m Int` がある
@@ -336,7 +336,7 @@ exactLength {m} len input = case checkEqNat m len of
 
 ---
 
-### まとめ
+#### まとめ
 - Idrisは依存型を扱えるプログラミング言語
 - 依存型では型が値に依存する
 - 依存型を使うと、様々な事前条件や事後条件を関数の型で表せる
@@ -393,8 +393,8 @@ exactLength {m} len input = case checkEqNat m len of
 
 ---
 
-### 参考文献
-#### 公式
+#### 参考文献
+##### 公式
 
 - [Type Driven Development with Idris](https://www.manning.com/books/type-driven-development-with-idris)
   - （実質的な）公式ガイドブック
@@ -405,8 +405,8 @@ exactLength {m} len input = case checkEqNat m len of
 
 ---
 
-### 参考文献
-#### 日本語
+#### 参考文献
+##### 日本語
 
 - [IdrisでWebアプリを書く](https://www.slideshare.net/tanakh/idrisweb)
   - 3年前の資料ですが面白いので最初に読むのにお勧め
@@ -417,8 +417,8 @@ exactLength {m} len input = case checkEqNat m len of
 
 ---
 
-### 参考文献
-#### Haskellers 向け
+#### 参考文献
+##### Haskellers 向け
 
 - [Idris for Haskellers](https://github.com/idris-lang/Idris-dev/wiki/Idris-for-Haskellers)
   - Haskeller 向け
