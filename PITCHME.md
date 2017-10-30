@@ -13,11 +13,20 @@ Yohei Oda
 
 ---
 
+### 今日話したいこと
+
+- Idrisと依存型の簡単な紹介
+- Idrisによる普通のプログラミング
+  - 嬉しいこと
+  - ややこしいこと
+
+---
+
 ### What's idris?
 
 - Haskellベースの関数型言語
   - 文法はほぼHaskell
-  - 実装もHaskellメイン
+  - 実装もHaskellメインで行われている
   - 使いやすいBetterHaskell的な側面
     - 正格評価がデフォルト
     - `:` と `::` が逆
@@ -50,8 +59,8 @@ Yohei Oda
 - `types are first class`
   - 引数として渡したり計算したりできる
 - 型を使った命題の証明ができる
-  - Coq や Agda などが代表的
-  - Idris は証明より型安全な（普通の）プログラミング路線（らしい）
+  - Coq や Agdaなどが代表的
+  - Idrisは定理証明系より汎用プログラミング路線
 
 ---
 
@@ -106,7 +115,10 @@ my_vect_map f [] = []
 my_vect_map f (x :: xs) = f x :: my_vect_map f xs
 ```
 
-- 「map関数を使っても要素の数は変わらない」ことが型で保証されている
+```
+> my_vect_map length ["apple", "banana"]
+[5, 6] : Vect 2 Nat
+```
 
 ---
 
@@ -128,38 +140,33 @@ my_vect_append [] ys = ys
 my_vect_append (x :: xs) ys = x :: my_vect_append xs ys
 ```
 
-- 引数の2つの長さを合計した長さのVectが返ってくる
-
----
-
-### Vect の zip
-
-```haskell
-my_vect_zip : Vect n a -> Vect n b -> Vect n (a, b)
-my_vect_zip [] ys = []
-my_vect_zip (x :: xs) (y :: ys) = (x, y) :: my_vect_zip xs ys
+```
+> my_vect_append [1,2,3] [6,7]
+[1, 2, 3, 6, 7] : Vect 5 Integer
 ```
 
-- 同じ長さの2つのVectにしか使うことができない
-- 複数の引数をとる場合でもシグネチャだけで関係性を表現できる
+---
+
+どんなうれしいことがあるか
 
 ---
 
-### 関数のテストで面倒なこと
+### 関数を作る時に面倒なこと
 
 - 色々なパターンの入力に対処する必要がある
   1. 普通の値
   1. コーナーケース
   1. やってほしくないが型の都合上渡せてしまう値
-- 更に入力値が複数あると組み合わせが爆発する
+- 引数が複数あると組み合わせが爆発する
 
 ---
 
-### 関数のテストで面倒なこと
+### 関数を作る時に面倒なこと
 
 - 呼び出し側のバリデーションは信用できない
-- 明らかにダメそうな値が渡された時にどうするか？
-  - 関数を実装する人の関心事ではない
+  - 結果バリデーションが二重になってたりする
+- ダメな値が渡された時にどうするか？
+  - エラーの返し方を考えないといけない
   - わけのわからない値を入れてくる方が悪い😤
 
 ---
@@ -175,7 +182,7 @@ index: List a -> Integer -> a
 
 ---
 
-### 型をちょっと強くする
+### 型の制約をきつくする
 
 ```haskell
 index: List a -> Nat -> a
@@ -196,31 +203,59 @@ index: Vect n a -> Fin n -> a
 - `List a` を `Vect n a` に変更
 - 添字を `Fin n` (n より小さい自然数を表す型) で渡す
 - 要素を必ず取り出せることを型で保証できる
+  - Maybe 不要
+
+---
+
+### 他の例
+
+#### Vect の tail
+
+my_vect_tail: Vect (S n) a -> Vect n a
+my_vect_tail (x :: xs) = xs
+
+- `Vect (S n) a` を要求する
+  - `S k` は k より 1 大きい数
+  - `Vect 0 a` では型が合わない
+    - 空リストではこの関数は呼べない
+  - 処理が必ず成功することを保証できる
+
+---
+
+### Vect の zip
+
+```haskell
+my_vect_zip : Vect n a -> Vect n b -> Vect n (a, b)
+my_vect_zip [] ys = []
+my_vect_zip (x :: xs) (y :: ys) = (x, y) :: my_vect_zip xs ys
+```
+
+- 同じ長さの2つのVectにしか使うことができない
+- 複数の引数をとる場合でもシグネチャだけで関係性を表現できる
 
 ---
 
 ### 関数に依存型を使うメリット
 
-- あらかじめ関数が期待する値を型として表現できる
+- 関数が期待する値を型として表現できる
   - 複数の値の組み合わせも型の制約対象にできる
-  - 期待する値が渡された時の振る舞いのテストに注力できる
+  - 期待する値での振る舞いに注力できる
+- バリデーションを呼び出し側に強制できる
+  - バリデーション漏れがない
 
 ---
 
 ### 関数に依存型を使うメリット
 
-- 引数に渡す前のバリデーションを呼び出し側に強制できる
 - 呼び出し側から見ると…
   - 関数が求める値をシグネチャだけで判断できる
+    - ドキュメントもすっきり
   - 必要なバリデーションが明確
+    - 型をあわせられればよい
 
 ---
 
 いい感じ😊
-
----
-
-もうちょっと色々やってみましょう
 
 ---
 
@@ -237,7 +272,7 @@ index: Vect n a -> Fin n -> a
 - `==` の振る舞いは型として定義されているわけではない
   - 型チェッカーは「`n==m` だから `n と m は同じ` 」と判定できない
 - 型チェッカーにもわかるように書いてみる
-  - （実際は組み込みの関数が使えたりしますが…）
+  - （実際は組み込みの関数が使えたりしますが自分で作ってみます）
 
 ---
 
@@ -253,19 +288,19 @@ data EqNat : (num1 : Nat) -> (num2 : Nat) -> Type where
 
 ---
 
-#### 2つの同じ値にそれぞれ1を足しても同じ値になる
+#### 2つの同じ値に1ずつ足してみる
 
 ```haskell
 sameS : (k: Nat) -> (j: Nat) -> (eq : EqNat k j) -> EqNat (S k) (S j)
 sameS j j (Same j) = Same(S j)
 ```
 
-- `S k` は k より 1 大きい数
-- `EqNat k j` が存在しているので k と j は同じ値として扱える
+- `EqNat k j` の値があれば `EqNat (S k) (S j)` も作れることを示せた
+  - 関数の型で表現できている
 
 ---
 
-#### 2つの値が同じかどうか判定する関数
+#### 2つの値からEqNatを作る
 
 ```haskell
 checkEqNat : (num1 : Nat) -> (num2 : Nat) -> Maybe (EqNat num1 num2)
@@ -277,10 +312,10 @@ checkEqNat (S k) (S j) = case checkEqNat k j of
                               (Just eq) => Just (sameS _ _ eq)
 ```
 
-- Z と Z は同じ(Zはゼロのこと)
-- S k と Z は違う
-- 2つの値を S k と S j と書けるなら k と j を調べる
-  - k と j が同じなら `sameS` により S k と S j も同じ
+- Z と Z であれば `EqNat 0 0` が作れる(Zは0)
+- S k と Z は違う値
+- 2つの値を S k と S j と書けるなら `EqNat k j` を作ってみる
+  - `EqNat k j` が作れれば `sameS` により `EqNat S k S j` も作れる
 
 ---
 
@@ -295,7 +330,7 @@ exactLength {m} len input = case checkEqNat m len of
 ```
 
 - `len と m が等しい` 場合は `Vect m a` を `Vect len a` として扱えている
-  - Idris が型レベルで m と len が同じだと判定できている
+  - `EqNat m len` により型レベルで m と len が同じだと判定できている
 
 ---
 
@@ -304,8 +339,8 @@ exactLength {m} len input = case checkEqNat m len of
 - 依存型では型が値に依存する
 - 依存型を使うと、様々な事前条件や事後条件を関数の型で表せる
   - バリデーションが行われることを保証できる
-  - 関数を書く側は変な値をテストする必要がない
-- 型変換をするときは型チェッカーにわかるようにする必要がある
+  - 実装に注力できる
+- 依存型の操作は型チェッカーにわかるようにする必要がある
 
 ---
 
@@ -337,8 +372,8 @@ exactLength {m} len input = case checkEqNat m len of
 
 - 型チェッカーに怒られる => 死
   - とにかく厳密
-    - `S a` と `a + 1` が違うくらいで激おこ
-    - どう解決していいかよくわからない
+    - `S a` と `a + 1` が違うとか
+    - 解決のコツがよくわからない
 - 依存型の実装/実装テクニックが独特
   - 思いつかない
 
@@ -349,11 +384,10 @@ exactLength {m} len input = case checkEqNat m len of
 
 - 遅い
   - コンパイルも実行も遅い
-    - Natがひどい
-- CPUもぶんぶん回る   
+- CPUもぶんぶん回る
 - 普通のことが普通にできないときがある
   - 型の証明がちゃんと動いていないときがあるような…?
-  - このへんは今後の改善に期待
+- ランタイム、コンパイラの問題は今後の改善に期待
 
 ---
 
@@ -389,5 +423,3 @@ exactLength {m} len input = case checkEqNat m len of
 
 - [10 things Idris improved over Haskell](https://deque.blog/2017/06/14/10-things-idris-improved-over-haskell/)
   - Better Haskell としての Idris を知りたい人にお勧め
-
----
