@@ -228,7 +228,7 @@ my_vect_tail (x :: xs) = xs
 
 ```haskell
 my_vect_zip : Vect n a -> Vect n b -> Vect n (a, b)
-my_vect_zip [] ys = []
+my_vect_zip [] [] = []
 my_vect_zip (x :: xs) (y :: ys) = (x, y) :: my_vect_zip xs ys
 ```
 
