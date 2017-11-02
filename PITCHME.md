@@ -90,6 +90,7 @@ Nil : Vect 0 elem
     A non-empty vector of length S len, consisting of a head element and the rest of the list, of length len.
     infixr 7
 ```
+- `S len` は len より 1 大きい数
 
 ---
 
@@ -219,7 +220,6 @@ my_vect_tail (x :: xs) = xs
 ```
 
 - `Vect (S n) a` を要求する
-  - `S k` は k より 1 大きい数
   - `Vect 0 a` では型が合わない
     - 空リストではこの関数は呼べない
   - 処理が必ず成功することを保証できる
@@ -374,7 +374,7 @@ IsNonEmpty : NonEmpty (x :: xs)
 ```
 
 - 自動的に `NonEmpty l` の値をコンパイル時に見つけてくる
-  - l が空だと `NonEmpty` は作れないのでコンパイルに失敗する
+  - l が空だと `NonEmpty l` は存在しないのでコンパイルに失敗する
 
 ---
 
