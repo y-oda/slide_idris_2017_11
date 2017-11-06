@@ -79,11 +79,13 @@ from [wikipedia](https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube
 #### Vect の型とコンストラクタ
 
 - 型
+
 ```haskell
 Vect : Nat -> Type -> Type
 ```
 
 - コンストラクタ
+
 ```haskell
 Nil : Vect 0 elem
     Empty vector
