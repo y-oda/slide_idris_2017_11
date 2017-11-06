@@ -1,4 +1,4 @@
-### Idris きほんのき
+### ふつうのプログラミング with Idris
 
 Yohei Oda
 
@@ -15,10 +15,9 @@ Yohei Oda
 
 ### 今日話したいこと
 
-- Idrisと依存型の簡単な紹介
-- Idrisによる普通のプログラミング
-  - 嬉しいこと
-  - ややこしいこと
+- Idrisと依存型の紹介
+- 普通のプログラミングで嬉しいこと
+- 普通のプログラミングで考慮すること
 
 ---
 
@@ -52,7 +51,6 @@ Yohei Oda
 
 ![](https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png)
 
-
 from [wikipedia](https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png)
 
 ---
@@ -63,8 +61,8 @@ from [wikipedia](https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube
   - 型が値に依存する
 - `types are first class`
   - 引数として渡したり計算したりできる
-- 型を使った命題の証明ができる
-  - CoqやAgdaなどが代表的
+- 型を使った証明ができる
+  - 証明支援ではCoqやAgdaなどが有名
   - Idrisは定理証明系より汎用プログラミング路線
 
 ---
@@ -86,6 +84,8 @@ Vect : Nat -> Type -> Type
 ```
 
 - `Nat` は自然数を表す型
+  - Z … ゼロ
+  - S a … Nat の1つ次の数
 
 ##### コンストラクタ
 
@@ -97,7 +97,6 @@ Nil : Vect 0 elem
     A non-empty vector of length S len, consisting of a head element and the rest of the list, of length len.
     infixr 7
 ```
-- `S len` は len より 1 大きい数
 
 ---
 
@@ -279,10 +278,15 @@ my_vect_zip (x :: xs) (y :: ys) = (x, y) :: my_vect_zip xs ys
 
 ---
 
-- できない😭
+できない😭
+
+---
+
+#### 型チェッカーの観点
+
 - `==` の振る舞いは型として定義されているわけではない
-  - 型チェッカーは「`n==m` だから `n と m は同じ` 」と判定できない
-- 型チェッカーにもわかるように書いてみる
+  - 「`n==m` だから `n と m は同じ` 」と判定できない
+- 型チェッカーにもわかるように書かないとダメ
   - （実際は組み込みの関数が使えたりしますが自分で作ってみます）
 
 ---
@@ -306,7 +310,7 @@ sameS : (k: Nat) -> (j: Nat) -> (eq : EqNat k j) -> EqNat (S k) (S j)
 sameS j j (Same j) = Same(S j)
 ```
 
-- `EqNat k j` の値があれば `EqNat (S k) (S j)` も作れることを示せた
+- `EqNat k j` の値があれば `EqNat (S k) (S j)` の値も存在する
   - 関数の型で表現できている
 
 ---
@@ -323,10 +327,11 @@ checkEqNat (S k) (S j) = case checkEqNat k j of
                               (Just eq) => Just (sameS _ _ eq)
 ```
 
-- Z と Z であれば `EqNat 0 0` が作れる(Zは0)
-- S k と Z は違う値
-- S k と S j と書けるなら `EqNat k j` を作る
-  - `sameS` より`EqNat k j` なら `EqNat (S k) (S j)`
+- 2つの値が…
+  - Z と Z であれば `EqNat 0 0` が作れる
+  - S k と Z は違う値
+  - S k と S j と書けるなら k と j について再帰する
+    - `sameS` より`EqNat k j` から `EqNat (S k) (S j)` が導ける
 
 ---
 
@@ -341,7 +346,7 @@ exactLength {m} len input = case checkEqNat m len of
 ```
 
 - `len と m が等しい` 場合は `Vect m a` を `Vect len a` として扱えている
-  - `EqNat m len` により型チェックで m と len が同じだと判定できている
+  - `EqNat m len` の存在から型チェックで m と len が同じだと判定可能
 
 ---
 
@@ -368,7 +373,7 @@ maybe_zip {n} x y = case exactLength n y of
 
 #### auto-implicit argument
 
-- 似たようなテクニックで依存型を引数に取らない関数も安全にしている
+- 同じようなテクニックで依存型を引数に取らない関数も安全にしている
 
 ```haskell
 Prelude.List.tail : (l : List a) -> {auto ok : NonEmpty l} -> List a
@@ -400,13 +405,15 @@ IsNonEmpty : NonEmpty (x :: xs)
 ##### Idris のいいところ
 
 - コンパイルが通ったときの信頼感がすごい
-- すさまじく柔軟
+  - 事後条件のチェックが結構うれしい
+- 安全かつ柔軟
   - 安全であれば割となんでもありなコンパイラ
   - たまになぜ動いているのかよくわからない😇
-- 依存型ならではの謎のテクニック
+- 依存型ならではのテクニック
+  - 強力な実装のサーチ
   - 返り値の型をパラメータ的に使ったりできる
 - 基本的な文法の学習が比較的容易
-  - Haskell読めればだいたい読める
+  - Haskellが読めればだいたい読める
 
 ---
 
@@ -427,9 +434,8 @@ IsNonEmpty : NonEmpty (x :: xs)
 - 型チェッカーに怒られる => 死
   - とにかく厳密
     - 解決のコツがよくわからない
-- 依存型の実装/実装テクニックが独特
-  - 思いつかない
-- ガチ勢の皆さんによるノウハウ布教に期待🙏
+- 依存型の実装テクニックのノウハウがない
+- ガチ勢の皆さんによる布教に期待🙏
 
 ---
 
