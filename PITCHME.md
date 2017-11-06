@@ -52,7 +52,7 @@ Yohei Oda
 
 ![](https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png)
 
-- https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png
+※ [wikipedia](https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png)
 
 ---
 
