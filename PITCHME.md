@@ -50,9 +50,9 @@ Yohei Oda
 
 - 依存型を扱うことができる
 
-![Logo](https://en.wikipedia.org/wiki/File:Lambda_cube.png)
+![](https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png)
 
-https://en.wikipedia.org/wiki/File:Lambda_cube.png
+###### https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube.png
 
 ---
 
