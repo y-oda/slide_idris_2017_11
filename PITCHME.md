@@ -61,7 +61,7 @@ from [wikipedia](https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube
 - 型と値が組み合わさったとても強い型
   - 型が値に依存する
 - `types are first class`
-  - 引数として渡したり計算したりできる
+  - 型を値や関数と同じように扱える
 - 型を使った証明ができる
   - 証明支援ではCoqやAgdaなどが有名
   - Idrisは定理証明系より汎用プログラミング路線
@@ -79,16 +79,11 @@ from [wikipedia](https://upload.wikimedia.org/wikipedia/commons/1/19/Lambda_cube
 #### Vect の型とコンストラクタ
 
 - 型
-
 ```haskell
 Vect : Nat -> Type -> Type
 ```
 
-  - 注) `Nat` は自然数を表す型
-    - `Z` (ゼロ) と `S a` (Nat の1つ次の数) から作られる
-
 - コンストラクタ
-
 ```haskell
 Nil : Vect 0 elem
     Empty vector
@@ -97,6 +92,8 @@ Nil : Vect 0 elem
     A non-empty vector of length S len, consisting of a head element and the rest of the list, of length len.
     infixr 7
 ```
+
+- Nat は `Z` と `S a` からなる自然数を表す型
 
 ---
 
