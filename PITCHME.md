@@ -50,6 +50,10 @@ Yohei Oda
 
 - 依存型を扱うことができる
 
+![Logo](https://en.wikipedia.org/wiki/File:Lambda_cube.png)
+
+https://en.wikipedia.org/wiki/File:Lambda_cube.png
+
 ---
 
 #### 依存型
@@ -79,6 +83,8 @@ Yohei Oda
 ```haskell
 Vect : Nat -> Type -> Type
 ```
+
+- `Nat` は自然数を表す型
 
 ##### コンストラクタ
 
@@ -190,7 +196,7 @@ index: List a -> Integer -> a
 index: List a -> Nat -> a
 ```
 
-- 添字を `Nat` (自然数を表す型) で渡すように変更
+- 添字を `Nat` で渡すように変更
   - マイナスの数を渡すことはできない
 - リストのサイズより大きな値がきたらどうする？
   - やっぱり Maybe で返したほうがよさそう
