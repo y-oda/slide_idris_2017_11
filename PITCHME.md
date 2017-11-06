@@ -379,7 +379,12 @@ Prelude.List.tail : (l : List a) -> {auto ok : NonEmpty l} -> List a
 ```
 
 - 自動的に `NonEmpty l` の値をコンパイル時に見つけてくる
-  - `NonEmpty` のコンストラクタは `IsNonEmpty : NonEmpty (x :: xs)`
+  - `NonEmpty` のコンストラクタ
+
+  ```haskell
+  IsNonEmpty : NonEmpty (x :: xs)
+  ```
+
   - l が空だと `NonEmpty l` 型の値を作れないのでコンパイルに失敗する
 
 ---
@@ -403,6 +408,12 @@ Prelude.List.tail : (l : List a) -> {auto ok : NonEmpty l} -> List a
 - 安全かつ柔軟
   - 安全であれば割となんでもあり
   - たまになぜ動いているのかよくわからない😇
+
+---
+
+#### 個人的な感想
+##### Idris のいいところ
+
 - 依存型ならではのテクニック
   - 強力な実装のサーチ
   - 返り値の型をパラメータ的に使ったりできる
