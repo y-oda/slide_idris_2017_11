@@ -1,4 +1,4 @@
-### ふつうのプログラミング with Idris
+### はじめてのプログラミング with Idris
 
 Yohei Oda
 
@@ -9,7 +9,7 @@ Yohei Oda
 - Scalaエンジニア（2年半）
 - JVMとかGCとか好き
 - HaskellはすごいH本を一通り読んだくらい
-- Coq??😇
+- Coq??😪
 
 ---
 
@@ -310,7 +310,6 @@ sameS j j (Same j) = Same(S j)
 ```
 
 - `EqNat k j` の値があれば `EqNat (S k) (S j)` の値も存在する
-  - 関数の型で表現できている
 
 ---
 
@@ -345,7 +344,7 @@ exactLength {m} len input = case checkEqNat m len of
 ```
 
 - `len と m が等しい` 場合は `Vect m a` を `Vect len a` として扱えている
-  - `EqNat m len` の存在から型チェックで m と len が同じだと判定可能
+  - `EqNat m len` の存在から型チェックで m と len が同じだと判定している
 
 ---
 
@@ -366,6 +365,20 @@ maybe_zip: Vect n a -> Vect m b -> Maybe(Vect n (a,b))
 maybe_zip {n} x y = case exactLength n y of
                       Nothing => Nothing
                       Just z => Just (my_zip x z)
+```
+
+---
+
+#### checkEqNat をもうちょっと一般化
+
+```haskell
+checkEqNat' : (num1 : Nat) -> (num2 : Nat) -> Maybe (num1 = num2)
+checkEqNat' Z Z = Just Refl
+checkEqNat' Z (S k) = Nothing
+checkEqNat' (S k) Z = Nothing
+checkEqNat' (S k) (S j) = case checkEqNat' k j of
+                             Nothing => Nothing
+                             (Just proof) => Just (cong proof)
 ```
 
 ---
@@ -392,10 +405,8 @@ Prelude.List.tail : (l : List a) -> {auto ok : NonEmpty l} -> List a
 #### まとめ
 
 - Idrisは依存型を扱えるプログラミング言語
-- 依存型では型が値に依存する
 - 依存型を使うと、様々な事前条件や事後条件を関数の型で表せる
-  - バリデーションが行われることを保証できる
-  - 実装に注力できる
+  - バリデーションが行われることの保証もできる
 - 依存型の操作は型チェッカーにわかるようにする必要がある
 
 ---
@@ -414,9 +425,10 @@ Prelude.List.tail : (l : List a) -> {auto ok : NonEmpty l} -> List a
 #### 個人的な感想
 ##### Idris のいいところ
 
-- 依存型ならではのテクニック
+- 依存型ならではのテクニックやツール
   - 強力な実装のサーチ
   - 返り値の型をパラメータ的に使ったりできる
+  - `totality checking`
 - 基本的な文法の学習が比較的容易
   - Haskellが読めればだいたい読める
 
@@ -426,11 +438,12 @@ Prelude.List.tail : (l : List a) -> {auto ok : NonEmpty l} -> List a
 ##### Idris のつらいところ
 
 - わかりづらいエラー
-  - 言っていることが難しすぎてよくわからない 😇
+  - 言っていることが難しくてよくわからない 😇
   - 型がわからなくなり遭難
-  - 頑張った結果インデント間違いだったり…
+  - 色々試した結果インデントのずれだったり…
+    - 自動でできることは自動でやるのがよさそう
 - 依存型の実装テクニックのノウハウがない
-  - ガチ勢の皆さんによる布教に期待🙏
+  - Agdaの資料とかが参考になりそうな気がする
 
 ---
 
@@ -442,7 +455,9 @@ Prelude.List.tail : (l : List a) -> {auto ok : NonEmpty l} -> List a
 - CPUもぶんぶん回る
 - 普通のことが普通にできないときがある
   - 型の証明がちゃんと動いていないときがあるような…?
-- ランタイムの改善は頑張ってほしい…
+  - `deriving` がなくて面倒
+    - 依存型とあんまり相性がよくないらしい
+- コンパイラ&ランタイムの改善は頑張ってほしい…
 
 ---
 
