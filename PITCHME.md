@@ -391,7 +391,7 @@ checkEqNat' (S k) (S j) = case checkEqNat' k j of
 Prelude.List.tail : (l : List a) -> {auto ok : NonEmpty l} -> List a
 ```
 
-- 自動的に `NonEmpty l` の値をコンパイル時に見つけてくる
+- `NonEmpty l` の値の存在をコンパイル時にチェック
   - `NonEmpty` のコンストラクタ
 
   ```haskell
